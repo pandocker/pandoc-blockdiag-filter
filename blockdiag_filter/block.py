@@ -29,7 +29,7 @@ class Blockdiag(object):
         self.source = options.get("input")
         self.toPNG = bool(options.get("png", True))
         self.toSVG = bool(options.get("svg", False))
-        self.toPDF = bool(options.get("pdf", False))
+        self.toPDF = True if doc.format in ["latex"] else bool(options.get("pdf", False))
         self.caption = options.get("caption", "Untitled")
         self.dir_to = options.get("directory", self.defaultdir_to)
 
@@ -71,7 +71,8 @@ class Blockdiag(object):
             linkto = self.svg
         else:
             if not (self.toPNG):
-                aafigure.render(code, self.png, {"format": "png"})
+                args = ["-T", "png", "-a", "-o", self.png, self.source]
+                self.blockdiag.run(args)
             linkto = self.png
 
         caption = pf.convert_text(self.caption)
