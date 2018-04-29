@@ -11,7 +11,7 @@ applies MIT License (c) 2018 pandocker/Kazuki Yamamoto(k.yamamoto.08136891@gmail
 """
 import os
 import panflute as pf
-from block import Blockdiag
+from .block import Blockdiag
 
 
 class inline_blockdiag(Blockdiag):
