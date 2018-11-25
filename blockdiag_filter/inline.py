@@ -19,9 +19,8 @@ class inline_blockdiag(Blockdiag):
     def __init__(self):
         super().__init__()
 
-    def action(self, elem, doc):
+    def action(self, elem, doc, **kwargs):
         if isinstance(elem, pf.Link) and "blockdiag" in elem.classes:
-
             fn = elem.url
             options = elem.attributes
             idn = elem.identifier
