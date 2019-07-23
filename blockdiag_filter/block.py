@@ -27,9 +27,9 @@ class Blockdiag(object):
     def render(self, options, data, element, doc):
         self.doc = doc
         self.source = options.get("input")
-        self.toPNG = bool(options.get("png", True))
-        self.toSVG = bool(options.get("svg", False))
-        self.toPDF = True if doc.format in ["latex"] else bool(options.get("pdf", False))
+        # self.toPNG = bool(options.get("png", True))
+        # self.toSVG = bool(options.get("svg", False))
+        # self.toPDF = True if doc.format in ["latex"] else bool(options.get("pdf", False))
         self.caption = options.get("caption", "Untitled")
         self.dir_to = options.get("directory", self.defaultdir_to)
 
@@ -49,34 +49,32 @@ class Blockdiag(object):
             code = open(self.source, "r", encoding="utf-8").read()
 
         assert self.source is not None, "option input is mandatory"
-        assert isinstance(self.toPNG, bool), "option png is boolean"
-        assert isinstance(self.toPDF, bool), "option pdf is boolean"
 
-        self.svg = ".".join([self.basename, "svg"])
-        self.png = ".".join([self.basename, "png"])
-        self.pdf = ".".join([self.basename, "pdf"])
+        linkto = ".".join([self.basename, "svg"])
+        # self.png = ".".join([self.basename, "png"])
+        # self.pdf = ".".join([self.basename, "pdf"])
 
         # parsed = self.blockdiag.module.parser.parse_string(code)
-        args = ["-T", "svg", "-a", "-o", self.svg, self.source]
+        args = ["-T", "svg", "-a", "-o", linkto, self.source]
         self.blockdiag.run(args)
 
-        if(self.toPDF):
-            args = ["-T", "pdf", "-a", "-o", self.pdf, self.source]
-            self.blockdiag.run(args)
-
-        if(self.toPNG):
-            args = ["-T", "png", "-a", "-o", self.png, self.source]
-            self.blockdiag.run(args)
-
-        if self.doc.format in ["latex"]:
-            linkto = self.pdf
-        elif self.doc.format in ["html", "html5"]:
-            linkto = self.svg
-        else:
-            if not (self.toPNG):
-                args = ["-T", "png", "-a", "-o", self.png, self.source]
-                self.blockdiag.run(args)
-            linkto = self.png
+        # if(self.toPDF):
+        #     args = ["-T", "pdf", "-a", "-o", self.pdf, self.source]
+        #     self.blockdiag.run(args)
+        #
+        # if(self.toPNG):
+        #     args = ["-T", "png", "-a", "-o", self.png, self.source]
+        #     self.blockdiag.run(args)
+        #
+        # if self.doc.format in ["latex"]:
+        #     linkto = self.pdf
+        # elif self.doc.format in ["html", "html5"]:
+        #     linkto = self.svg
+        # else:
+        #     if not (self.toPNG):
+        #         args = ["-T", "png", "-a", "-o", self.png, self.source]
+        #         self.blockdiag.run(args)
+        #     linkto = self.png
 
         caption = pf.convert_text(self.caption)
         caption = caption[0]
